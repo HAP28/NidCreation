@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Models;
@@ -17,9 +19,12 @@ namespace WebAPI.Controllers
     public class BlogController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public BlogController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+
+        public BlogController(IConfiguration configuration,IWebHostEnvironment environment)
         {
             this._configuration = configuration;
+            this._environment = environment;
         }
 
         // GET: api/<BlogController>
@@ -27,6 +32,31 @@ namespace WebAPI.Controllers
         public JsonResult Get()
         {
             string query = @"select * from dbo.Blog";
+            DataTable table = new DataTable();
+            string dataSource = _configuration.GetConnectionString("BlogConnection");
+            SqlDataReader dataReader;
+            using (SqlConnection con = new SqlConnection(dataSource))
+            {
+                con.Open();
+                using (SqlCommand command = new SqlCommand(query, con))
+                {
+                    dataReader = command.ExecuteReader();
+                    table.Load(dataReader);
+
+                    dataReader.Close();
+                    con.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        // GET: api/<BlogController>/5
+        [HttpGet("{id}")]
+        public JsonResult GetBlog(int id)
+        {
+            string query = @"select * from dbo.Blog where 
+                BlogId = '" + id + "'";
+
             DataTable table = new DataTable();
             string dataSource = _configuration.GetConnectionString("BlogConnection");
             SqlDataReader dataReader;
@@ -77,7 +107,7 @@ namespace WebAPI.Controllers
             string query = @"update dbo.Blog set
                 BlogTitle = '" + data.Title + "'," +
                 "BlogDescription = '" + data.Description + "'," +
-                "BlogImageName = '" + data.Image + "'";
+                "BlogImageName = '" + data.Image + "' where BlogId = '" + id + "'";
 
             DataTable table = new DataTable();
             string dataSource = _configuration.GetConnectionString("BlogConnection");
@@ -120,6 +150,29 @@ namespace WebAPI.Controllers
                 }
             }
             return new JsonResult("1 Row Deleted");
+        }
+        // DELETE api/<BlogController>/SaveImage
+        [Route("SaveImage")]
+        [HttpPost]
+        public JsonResult SaveImage()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string fileName = postedFile.FileName;
+                var physicalPath = _environment.ContentRootPath + "/Photos/"+fileName;
+
+                using(var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+                return new JsonResult(fileName);
+            }
+            catch(Exception)
+            {
+                return new JsonResult("default.png");
+            }
         }
     }
 }

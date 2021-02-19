@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HARSHIT\\Desktop\\NidCreations\\WebAPI\\WebAPI\\WebAPI.csproj": {}
+    "C:\\Users\\HARSHIT\\Desktop\\NidCreation\\WebAPI\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HARSHIT\\Desktop\\NidCreations\\WebAPI\\WebAPI\\WebAPI.csproj": {
+    "C:\\Users\\HARSHIT\\Desktop\\NidCreation\\WebAPI\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HARSHIT\\Desktop\\NidCreations\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\HARSHIT\\Desktop\\NidCreation\\WebAPI\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Users\\HARSHIT\\Desktop\\NidCreations\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectPath": "C:\\Users\\HARSHIT\\Desktop\\NidCreation\\WebAPI\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\HARSHIT\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HARSHIT\\Desktop\\NidCreations\\WebAPI\\WebAPI\\obj\\",
+        "outputPath": "C:\\Users\\HARSHIT\\Desktop\\NidCreation\\WebAPI\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HARSHIT\\AppData\\Roaming\\NuGet\\NuGet.Config",
